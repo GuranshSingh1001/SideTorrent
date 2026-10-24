@@ -2,7 +2,7 @@ name: "Unsigned IPA Build"
 
 on:
   push:
-    branches: [main, unsigned-ipa-only]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -39,10 +39,12 @@ jobs:
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_IDENTITY="" \
-            clean build
+            build
 
       - name: Package unsigned IPA
         run: |
