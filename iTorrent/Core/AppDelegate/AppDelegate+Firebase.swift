@@ -12,7 +12,7 @@ import FirebaseCore
 
 extension AppDelegate {
     func registerFirebase() {
-#if canImport(FirebaseCore)
+#if canImport(FirebaseCore) && !UNSIGNED_IPA_BUILD
         FirebaseApp.configure()
 #endif
     }
