@@ -24,8 +24,32 @@ jobs:
         with:
           xcode-version: 26.6
 
+      - name: Cache Xcode build products and Swift packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ runner.temp }}/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-xcode26-${{ hashFiles('iTorrent.xcodeproj/project.pbxproj', 'iTorrent.xcworkspace/xcshareddata/swiftpm/Package.resolved', 'iTorrent.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-xcode26-
+
       - name: Prepare build dependencies
-        run: brew install boost
+        run: |
+          if ! brew list --versions boost >/dev/null 2>&1; then
+            brew install boost
+          fi
+
+      - name: Provide optional Firebase resource for unsigned build
+        run: |
+          mkdir -p iTorrent/Core/Assets
+          if [ ! -f iTorrent/Core/Assets/GoogleService-Info.plist ]; then
+            cat > iTorrent/Core/Assets/GoogleService-Info.plist <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict/></plist>
+          PLIST
+          fi
 
       - name: Build LibTorrent
         run: ./Submodules/LibTorrent-Swift/make.sh
