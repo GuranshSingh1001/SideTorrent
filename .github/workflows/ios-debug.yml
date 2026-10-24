@@ -65,6 +65,7 @@ jobs:
             -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             -skipPackagePluginValidation \
             -skipMacroValidation \
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UNSIGNED_IPA_BUILD' \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_IDENTITY="" \
