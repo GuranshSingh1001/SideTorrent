@@ -204,9 +204,11 @@ private extension BaseSplitViewController {
     struct EmptyView: View {
         var body: some View {
             Image("DownloadArrowIcon")
+                .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 110, height: 110)
+                .foregroundStyle(Color.accentColor)
                 .ignoresSafeArea()
         }
     }
