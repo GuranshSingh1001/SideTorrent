@@ -203,7 +203,8 @@ private extension BaseSplitViewController {
 
     struct EmptyView: View {
         var body: some View {
-            Image(.iTorrentLogo)
+            Image(systemName: "arrow.down.circle.fill")
+                .font(.system(size: 100, weight: .bold))
                 .foregroundStyle(Color.secondary)
                 .ignoresSafeArea()
         }
