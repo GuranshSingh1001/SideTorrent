@@ -82,46 +82,12 @@ struct AdaptiveArrangementViewHolder<Primary: View, Secondary: View>: View {
     }
 
     var body: some View {
-#if compiler(>=6.3)
-        GeometryReader { proxy in
-            let bounds = CGRect(origin: .zero, size: proxy.size)
-            // This query returns only active division regions by default.
-            let hinge = proxy.reservedRegions(kind: .division)
-                .map(\.frame)
-                .first { $0.intersects(bounds) }
-            let placement = placement(in: bounds, hinge: hinge)
-
-            ZStack(alignment: .topLeading) {
-                secondary
-                    .frame(
-                        width: placement.secondary.width,
-                        height: placement.secondary.height
-                    )
-                    .position(
-                        x: placement.secondary.midX,
-                        y: placement.secondary.midY
-                    )
-                    .environment(\.adaptiveArrangementMode, placement.mode)
-
-                primary
-                    .frame(
-                        width: placement.primary.width,
-                        height: placement.primary.height
-                    )
-                    .position(
-                        x: placement.primary.midX,
-                        y: placement.primary.midY
-                    )
-                    .environment(\.adaptiveArrangementMode, placement.mode)
-            }
-            .frame(width: bounds.width, height: bounds.height)
-        }
-#else
+        // Keep the fallback compatible with the Xcode 26.6 SDK.
+        // GeometryProxy.reservedRegions is not available in this SDK.
         ZStack {
             secondary
             primary
         }
-#endif
     }
 
     private func placement(in bounds: CGRect, hinge: CGRect?) -> Placement {
