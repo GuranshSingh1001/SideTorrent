@@ -203,16 +203,63 @@ private extension BaseSplitViewController {
 
     struct EmptyView: View {
         var body: some View {
-            Image("DownloadArrowIcon")
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 110, height: 110)
-                .foregroundStyle(Color.accentColor)
-                .ignoresSafeArea()
+            VStack(spacing: 22) {
+                Image("DownloadArrowIcon")
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 76, height: 76)
+                    .foregroundStyle(Color.accentColor)
+                    .frame(width: 144, height: 144)
+                    .background(
+                        RoundedRectangle(cornerRadius: 38, style: .continuous)
+                            .fill(Color.accentColor.opacity(0.12))
+                    )
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 38, style: .continuous)
+                            .strokeBorder(Color.accentColor.opacity(0.22), lineWidth: 1)
+                    }
+
+                VStack(spacing: 10) {
+                    Text("Your next download starts here")
+                        .font(.title2.weight(.bold))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.primary)
+
+                    Text("Select a torrent from the sidebar to explore its files, progress, and peers.")
+                        .font(.body)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                        .lineSpacing(4)
+                        .frame(maxWidth: 380)
+                }
+
+                HStack(spacing: 10) {
+                    featureChip("Files", systemImage: "doc.text")
+                    featureChip("Progress", systemImage: "chart.bar.fill")
+                    featureChip("Peers", systemImage: "point.3.connected.trianglepath.dotted")
+                }
+                .padding(.top, 2)
+
+                Label("Tip: tap + to add a torrent", systemImage: "plus.circle")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Color.accentColor)
+                    .padding(.top, 4)
+            }
+            .padding(32)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(uiColor: .systemBackground))
         }
-    }
-}
+
+        private func featureChip(_ title: String, systemImage: String) -> some View {
+            Label(title, systemImage: systemImage)
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 9)
+                .background(Capsule().fill(Color.secondary.opacity(0.10)))
+        }
+    }}
 
 #Preview(body: {
     BaseSplitViewController.EmptyView()
