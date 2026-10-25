@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="iTorrent/Core/Assets/Assets.xcassets/AppIcon.appiconset/icon-1024.png" alt="App Icon" width="128" height="128">
+</p>
 <div align="center">
 
 # SideTorrent
