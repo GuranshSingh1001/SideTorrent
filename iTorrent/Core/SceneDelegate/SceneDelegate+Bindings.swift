@@ -12,6 +12,7 @@ extension SceneDelegate {
     var tintColorBind: AnyCancellable {
         PreferencesStorage.shared.$tintColor.sink { [unowned self] color in
             window?.tintColor = color
+            window?.tintToolbars(with: color)
         }
     }
 
@@ -33,5 +34,19 @@ extension SceneDelegate {
                     }
                 }
             }
+    }
+}
+
+
+private extension UIWindow {
+    func tintToolbars(with color: UIColor) {
+        func applyTint(to view: UIView) {
+            if let toolbar = view as? UIToolbar {
+                toolbar.tintColor = color
+            }
+            view.subviews.forEach(applyTint)
+        }
+
+        applyTint(to: self)
     }
 }
