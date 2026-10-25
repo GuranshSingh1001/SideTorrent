@@ -44,26 +44,9 @@ struct ReservedAreaContainerContent<Content: View>: View {
     }
 
     var body: some View {
-#if compiler(>=6.3)
-        GeometryReader { geometry in
-            let regions =
-                geometry.reservedRegions(kind: .occlusion)
-                    .map(\.frame)
-                + geometry.reservedRegions(kind: .division)
-                    .map(\.frame)
-
-            AvoidingLayout(
-                edge: edge,
-                margin: margin,
-                regions: regions
-            ) {
-                content
-            }
-        }
-        .ignoresSafeArea()
-#else
+        // Keep the fallback compatible with the Xcode 26.6 SDK.
+        // GeometryProxy.reservedRegions is not available in this SDK.
         content.padding()
-#endif
     }
 }
 
