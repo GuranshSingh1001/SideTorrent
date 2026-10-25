@@ -190,7 +190,7 @@ private extension TorrentHandle {
 
         disposeBag.bind {
             __unthrottledUpdatePublisher
-                .throttle(for: .seconds(0.1), scheduler: .main, latest: true)
+                .throttle(for: .seconds(1), scheduler: .main, latest: true)
                 .receive(on: DispatchQueue.global(qos: .userInitiated))
                 .sink { [weak self, weak torrentServide] in
                     guard let self, let torrentServide else { return }
