@@ -145,27 +145,6 @@ private extension TorrentFilesViewController {
             }
         }
 
-        func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
-            guard indexPaths.count == 1 else { return nil }
-            let node = parent.viewModel.node(at: indexPaths[0].item)
-            guard let node = node as? FileNode,
-                  let startIndex = parent.viewModel.filesForPreviewUnfiltered.firstIndex(where: { $0.index == node.index })
-            else { return nil }
-
-            let path = parent.viewModel.filesForPreviewUnfiltered[startIndex].path
-            let url = parent.viewModel.downloadPath.appending(path: path)
-
-            guard VLCPlayerViewModel.canOpenInVLCSync(url) != nil else { return nil }
-
-            return .init(actionProvider: { elements in
-                UIMenu(children: [
-                    UIAction(title: %"details.files.openVlcMediaPlayer") { [unowned self] _ in
-                        parent.vlcPlayerAction(url: url, index: node.index)
-                    }
-                ])
-            })
-        }
-
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             guard !collectionView.isEditing else {
                 return parent.reloadMoreMenuButton()
@@ -213,45 +192,11 @@ private extension TorrentFilesViewController {
         }
 
         Task {
-            let filePlayable = await checkFilePlayable(url: url)
-            let fileVLCPlayable = await VLCPlayerViewModel.canOpenInVLC(url, timeoutMilliseconds: 300) != nil
-
-            // Allow to choose be
-            guard filePlayable && fileVLCPlayable else {
-                if filePlayable {
-                    playerAction(start: startIndex)
-                    return
-                }
-
-                if fileVLCPlayable {
-                    vlcPlayerAction(url: url, index: fileIndex)
-                    return
-                }
-
+            if await checkFilePlayable(url: url) {
+                playerAction(start: startIndex)
+            } else {
                 previewAction(start: startIndex)
-                return
             }
-
-            let alert = UIAlertController(title: %"details.files.previewMode", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(.init(title: %"details.files.quickLookPreview", style: .default) { [self] _ in
-                previewAction(start: startIndex)
-            })
-            if filePlayable {
-                alert.addAction(.init(title: %"details.files.mediaPlayerPreview", style: .default) { [self] _ in
-                    playerAction(start: startIndex)
-                })
-            }
-            if fileVLCPlayable {
-                alert.addAction(.init(title: %"details.files.vlcMediaPlayerPreview", style: .default) { [self] _ in
-                    vlcPlayerAction(url: url, index: fileIndex)
-                })
-            }
-            alert.addAction(.init(title: %"common.cancel", style: .cancel))
-
-            alert.popoverPresentationController?.sourceView = cell
-            alert.popoverPresentationController?.sourceRect = cell.bounds
-
-            present(alert, animated: true)
         }
     }
 
@@ -293,10 +238,6 @@ private extension TorrentFilesViewController {
         player.currentItem?.externalMetadata = [title, artwork]
 
         present(playerController, animated: true)
-    }
-
-    func vlcPlayerAction(url: URL, index: Int) {
-        viewModel.navigate(to: VLCPlayerViewModel.self, with: .init(url: url, torrentPair: (viewModel.torrentHandle, index)), by: .present(wrapInNavigation: true, from: nil, style: .fullScreen))
     }
 
     func checkFilePlayable(url: URL) async -> Bool {
