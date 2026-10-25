@@ -13,6 +13,28 @@ import AVKit
 class SceneDelegate: MvvmSceneDelegate {
     override func initialSetup() {
         UIView.enableUIColorsToLayer()
+        configureClassicAppearance()
+    }
+
+    private func configureClassicAppearance() {
+        // Keep iOS 26+ system bars opaque instead of adopting Liquid Glass materials.
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.configureWithOpaqueBackground()
+        navigationAppearance.backgroundColor = .systemBackground
+        navigationAppearance.shadowColor = .separator
+
+        UINavigationBar.appearance().standardAppearance = navigationAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationAppearance
+        UINavigationBar.appearance().compactAppearance = navigationAppearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = navigationAppearance
+
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.configureWithOpaqueBackground()
+        tabAppearance.backgroundColor = .systemBackground
+        tabAppearance.shadowColor = .separator
+
+        UITabBar.appearance().standardAppearance = tabAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
     }
 
     override func register(in container: Container) {
