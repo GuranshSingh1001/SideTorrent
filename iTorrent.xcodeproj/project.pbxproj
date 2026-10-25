@@ -2707,9 +2707,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Submodules/SwiftVLC;
-		};
 		7CF9C2C52AF7F235009BBFA0 /* XCLocalSwiftPackageReference "Submodules/MVVMFoundation" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Submodules/MVVMFoundation;
@@ -2772,9 +2769,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-			isa = XCSwiftPackageProductDependency;
-			productName = SwiftVLC;
-		};
 		7C3142CF2C317E6400397E82 /* MarqueeText */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7C3142CE2C317E6400397E82 /* XCRemoteSwiftPackageReference "MarqueeText" */;
