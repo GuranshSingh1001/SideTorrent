@@ -87,27 +87,12 @@ class TagsView: UIScrollView {
     }
 
     private func setupBackgroundView() {
-#if os(iOS)
-        if #available(iOS 26, *) {
-            let effect = UIGlassEffect()
-//            effect.isInteractive = true
-            effect.tintColor = .tintColor
-
-            backgroundView = UIVisualEffectView(effect: effect)
-            backgroundView.clipsToBounds = true
-            backgroundView.layer.cornerCurve = .continuous
-        } else {
-            backgroundView = UIView()
-            backgroundView.clipsToBounds = true
-            backgroundView.backgroundColor = .tintColor
-            backgroundView.layer.cornerCurve = .continuous
-        }
-#else
+        // Use a normal opaque view for the selected filter chip on every iOS version.
+        // Do not use UIGlassEffect here: it reintroduces Liquid Glass on iOS 26.
         backgroundView = UIView()
         backgroundView.clipsToBounds = true
         backgroundView.backgroundColor = PreferencesStorage.shared.tintColor
         backgroundView.layer.cornerCurve = .continuous
-#endif
 
         insertSubview(backgroundView, aboveSubview: bottomStackView)
     }
