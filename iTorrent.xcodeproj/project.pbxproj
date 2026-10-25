@@ -14,9 +14,6 @@
 		7C1C08AA2C31F2F800569B45 /* PauseTorrentIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C08A92C31F2F000569B45 /* PauseTorrentIntent.swift */; };
 		7C1C08AB2C31F31900569B45 /* PauseTorrentIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C08A92C31F2F000569B45 /* PauseTorrentIntent.swift */; };
 		7C1C08AD2C31FEA400569B45 /* IntentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1C08AC2C31FEA000569B45 /* IntentsService.swift */; };
-		7C1CB72A2FDB4597000CCD0D /* SwiftVLC in Frameworks */ = {isa = PBXBuildFile; productRef = 7C1CB7292FDB4597000CCD0D /* SwiftVLC */; };
-		7C1CB72C2FDEC4E7000CCD0D /* RendererRouteMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1CB72B2FDEC4E7000CCD0D /* RendererRouteMenuView.swift */; };
-		7C1CB7302FDED209000CCD0D /* CastTrustResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1CB72F2FDED209000CCD0D /* CastTrustResponder.swift */; };
 		7C3142D02C317E6400397E82 /* MarqueeText in Frameworks */ = {isa = PBXBuildFile; productRef = 7C3142CF2C317E6400397E82 /* MarqueeText */; };
 		7C32535C2D19402F0069D640 /* CellularToggleSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C32535B2D19402F0069D640 /* CellularToggleSetupViewController.swift */; };
 		7C32535E2D1940440069D640 /* CellularToggleSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C32535D2D1940440069D640 /* CellularToggleSetupViewController.xib */; };
@@ -46,11 +43,8 @@
 		7C5B41082EEC3CDD001D4C68 /* TorrentFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B41072EEC3CD4001D4C68 /* TorrentFilesView.swift */; };
 		7C5B410A2EEC3E5B001D4C68 /* TorrentFilesModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B41092EEC3E56001D4C68 /* TorrentFilesModels.swift */; };
 		7C5B410B2EEC3FE6001D4C68 /* TorrentFilesModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B41092EEC3E56001D4C68 /* TorrentFilesModels.swift */; };
-		7C5B41122EEC53F8001D4C68 /* VLCPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B41112EEC53E8001D4C68 /* VLCPlayerView.swift */; };
 		7C5B41142EEC6341001D4C68 /* TorrentFilesFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B41132EEC633C001D4C68 /* TorrentFilesFileView.swift */; };
 		7C5B73672F6DDE8A00CC2B6C /* ResolvedTintColorKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B73662F6DDE8A00CC2B6C /* ResolvedTintColorKey.swift */; };
-		7C5B736C2F6EFED500CC2B6C /* VLCPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B736B2F6EFEC300CC2B6C /* VLCPlayerViewController.swift */; };
-		7C5B736E2F6EFFE100CC2B6C /* VLCPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B736D2F6EFFDF00CC2B6C /* VLCPlayerViewModel.swift */; };
 		7C5B73712F73288F00CC2B6C /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 7C5B73702F73288F00CC2B6C /* CombineCocoa */; };
 		7C5B73732F759FA100CC2B6C /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B73722F759FA100CC2B6C /* TimelineView.swift */; };
 		7C5B73752F75C07100CC2B6C /* CompatibilityGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5B73742F75C07100CC2B6C /* CompatibilityGlass.swift */; };
@@ -330,8 +324,6 @@
 		7C04A6082C446B4D00FBC649 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C1C08A92C31F2F000569B45 /* PauseTorrentIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseTorrentIntent.swift; sourceTree = "<group>"; };
 		7C1C08AC2C31FEA000569B45 /* IntentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentsService.swift; sourceTree = "<group>"; };
-		7C1CB72B2FDEC4E7000CCD0D /* RendererRouteMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererRouteMenuView.swift; sourceTree = "<group>"; };
-		7C1CB72F2FDED209000CCD0D /* CastTrustResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastTrustResponder.swift; sourceTree = "<group>"; };
 		7C32535B2D19402F0069D640 /* CellularToggleSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellularToggleSetupViewController.swift; sourceTree = "<group>"; };
 		7C32535D2D1940440069D640 /* CellularToggleSetupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellularToggleSetupViewController.xib; sourceTree = "<group>"; };
 		7C36BAFC2FDA0C8D006C240E /* TorrentHandle+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentHandle+Snapshot.swift"; sourceTree = "<group>"; };
@@ -351,11 +343,8 @@
 		7C5B41012EEC321A001D4C68 /* TorrentHandle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentHandle+Extensions.swift"; sourceTree = "<group>"; };
 		7C5B41072EEC3CD4001D4C68 /* TorrentFilesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilesView.swift; sourceTree = "<group>"; };
 		7C5B41092EEC3E56001D4C68 /* TorrentFilesModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilesModels.swift; sourceTree = "<group>"; };
-		7C5B41112EEC53E8001D4C68 /* VLCPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLCPlayerView.swift; sourceTree = "<group>"; };
 		7C5B41132EEC633C001D4C68 /* TorrentFilesFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilesFileView.swift; sourceTree = "<group>"; };
 		7C5B73662F6DDE8A00CC2B6C /* ResolvedTintColorKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolvedTintColorKey.swift; sourceTree = "<group>"; };
-		7C5B736B2F6EFEC300CC2B6C /* VLCPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLCPlayerViewController.swift; sourceTree = "<group>"; };
-		7C5B736D2F6EFFDF00CC2B6C /* VLCPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLCPlayerViewModel.swift; sourceTree = "<group>"; };
 		7C5B73722F759FA100CC2B6C /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		7C5B73742F75C07100CC2B6C /* CompatibilityGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibilityGlass.swift; sourceTree = "<group>"; };
 		7C5FBE0E2BBB227D0069E5A0 /* UISegmentedProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedProgressView.swift; sourceTree = "<group>"; };
@@ -599,7 +588,6 @@
 			files = (
 				7CAD30192BC3455800592990 /* SWXMLHash in Frameworks */,
 				7C36BB012FDA0FCE006C240E /* Perception in Frameworks */,
-				7C1CB72A2FDB4597000CCD0D /* SwiftVLC in Frameworks */,
 				7C5B73712F73288F00CC2B6C /* CombineCocoa in Frameworks */,
 				D1A226F42AEF01B700669D6D /* LibTorrent.framework in Frameworks */,
 				7CF6DA332C0F112B0033D03F /* OpenSSL in Frameworks */,
@@ -717,23 +705,10 @@
 			isa = PBXGroup;
 			children = (
 				7C5B41132EEC633C001D4C68 /* TorrentFilesFileView.swift */,
-				7C5B41112EEC53E8001D4C68 /* VLCPlayerView.swift */,
 				7C5B41072EEC3CD4001D4C68 /* TorrentFilesView.swift */,
 				D10257E52EE9BC1A00201640 /* TorrentDetailsView.swift */,
 			);
 			path = TorrentDetails;
-			sourceTree = "<group>";
-		};
-		7C5B736A2F6EFEA400CC2B6C /* VLCPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				7C5B73722F759FA100CC2B6C /* TimelineView.swift */,
-				7C5B736D2F6EFFDF00CC2B6C /* VLCPlayerViewModel.swift */,
-				7C5B736B2F6EFEC300CC2B6C /* VLCPlayerViewController.swift */,
-				7C1CB72B2FDEC4E7000CCD0D /* RendererRouteMenuView.swift */,
-				7C1CB72F2FDED209000CCD0D /* CastTrustResponder.swift */,
-			);
-			path = VLCPlayer;
 			sourceTree = "<group>";
 		};
 		7C5FBE0D2BBB206B0069E5A0 /* Views */ = {
@@ -1404,7 +1379,6 @@
 				D135C5962AEFB94900440680 /* TorrentDetails */,
 				D1EFCD062AF56A3200D33A7A /* TorrentFiles */,
 				D11138452AF94633008907F7 /* TorrentAdd */,
-				7C5B736A2F6EFEA400CC2B6C /* VLCPlayer */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1727,7 +1701,6 @@
 				7CDC7BBD2C516ADD00B51EFB /* FirebaseCrashlytics */,
 				7C5B73702F73288F00CC2B6C /* CombineCocoa */,
 				7C36BB002FDA0FCE006C240E /* Perception */,
-				7C1CB7292FDB4597000CCD0D /* SwiftVLC */,
 			);
 			productName = iTorrent;
 			productReference = D1A2269A2AEEEFCC00669D6D /* iTorrent.app */;
@@ -1776,7 +1749,6 @@
 				7C519C862C427E9A00E353A9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				7C5B736F2F73288F00CC2B6C /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				7C36BAFF2FDA0FCE006C240E /* XCRemoteSwiftPackageReference "swift-perception" */,
-				7C1CB7282FDB4597000CCD0D /* XCLocalSwiftPackageReference "Submodules/SwiftVLC" */,
 			);
 			productRefGroup = D1A2269B2AEEEFCC00669D6D /* Products */;
 			projectDirPath = "";
@@ -1903,7 +1875,6 @@
 				D10257E62EE9BC2000201640 /* TorrentDetailsView.swift in Sources */,
 				D10257CE2EE8638300201640 /* TorrentHandle+Extension.swift in Sources */,
 				7C36BAFD2FDA0C93006C240E /* TorrentHandle+Snapshot.swift in Sources */,
-				7C5B41122EEC53F8001D4C68 /* VLCPlayerView.swift in Sources */,
 				D10257E22EE865D400201640 /* NetworkMonitoringService.swift in Sources */,
 				D10257E32EE865DD00201640 /* TrackersListService.swift in Sources */,
 				7C5B41082EEC3CDD001D4C68 /* TorrentFilesView.swift in Sources */,
@@ -1979,12 +1950,10 @@
 				D1352D2A2BBD419D00104E7B /* UIViewController+TopPresented.swift in Sources */,
 				7C5FBE362BC0A24A0069E5A0 /* SceneDelegate+BackgroundDownload.swift in Sources */,
 				D1DB71882BD8FF60007F9267 /* Scheduler+Main.swift in Sources */,
-				7C5B736E2F6EFFE100CC2B6C /* VLCPlayerViewModel.swift in Sources */,
 				D1DB71942BD92242007F9267 /* PatreonPreferencesViewModel.swift in Sources */,
 				7CFEBE8D2BC440350013233F /* Array+MutableForEach.swift in Sources */,
 				7C5FBE6F2BC2EF8B0069E5A0 /* EditTextView.swift in Sources */,
 				D1B1BED22AFE2D9F0030C2A4 /* TrackerCellViewModel.swift in Sources */,
-				7C1CB7302FDED209000CCD0D /* CastTrustResponder.swift in Sources */,
 				D1EFCD0C2AF56A8900D33A7A /* TorrentFilesViewModel.swift in Sources */,
 				7CB2639C2C0671320083C052 /* Publisher+UI.swift in Sources */,
 				7CFEBEA72BC721CB0013233F /* RssListPreferencesViewController.swift in Sources */,
@@ -1996,7 +1965,6 @@
 				7CB6F6CE2BD82BAB00D0813B /* FileSharingPreferencesViewModel.swift in Sources */,
 				7CFEBE942BC441A20013233F /* RssDetailsViewModel.swift in Sources */,
 				D1352D2E2BBD6ED300104E7B /* UIColor+Hex.swift in Sources */,
-				7C5B736C2F6EFED500CC2B6C /* VLCPlayerViewController.swift in Sources */,
 				D1CAB8852AF3B51E00EB6AFF /* ToggleCellView.swift in Sources */,
 				7CE25BA72C24A848007B2FD7 /* CircularAnimation.swift in Sources */,
 				7C4CF2FE2BDE7DE50078FEA1 /* BaseView.swift in Sources */,
@@ -2072,7 +2040,6 @@
 				D1707C342AF297C500F1752A /* BaseSplitViewController.swift in Sources */,
 				7C5FBE192BBC91E70069E5A0 /* NetworkMonitoringService.swift in Sources */,
 				D1A226FF2AEF056A00669D6D /* BaseViewModel.swift in Sources */,
-				7C1CB72C2FDEC4E7000CCD0D /* RendererRouteMenuView.swift in Sources */,
 				7CC411622BD319AE00CA8B13 /* AppDelegate+RemoteConfig.swift in Sources */,
 				7CFEBE7F2BC431980013233F /* RssChannelViewModel.swift in Sources */,
 				D1B1BED02AFE2D760030C2A4 /* TrackerCellView.swift in Sources */,
@@ -2265,6 +2232,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTorrent/Core/Assets/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIDesignRequiresCompatibility = YES;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "iTorrent uses the local network to discover playback devices and cast video on your network.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -2414,6 +2382,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTorrent/Core/Assets/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIDesignRequiresCompatibility = YES;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "iTorrent uses the local network to discover playback devices and cast video on your network.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -2663,6 +2632,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTorrent/Core/Assets/Info.plist;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIDesignRequiresCompatibility = YES;
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "iTorrent uses the local network to discover playback devices and cast video on your network.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -2737,7 +2707,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		7C1CB7282FDB4597000CCD0D /* XCLocalSwiftPackageReference "Submodules/SwiftVLC" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Submodules/SwiftVLC;
 		};
@@ -2803,7 +2772,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7C1CB7292FDB4597000CCD0D /* SwiftVLC */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftVLC;
 		};
