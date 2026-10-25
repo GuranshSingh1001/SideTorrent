@@ -203,10 +203,10 @@ private extension BaseSplitViewController {
 
     struct EmptyView: View {
         var body: some View {
-            Image("DownloadFolderIcon")
+            Image("DownloadArrowIcon")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 160, height: 110)
+                .frame(width: 110, height: 110)
                 .ignoresSafeArea()
         }
     }
