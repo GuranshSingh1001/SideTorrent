@@ -36,23 +36,19 @@ class TorrentDetailsViewController<VM: TorrentDetailsViewModel>: BaseCollectionV
                 shareButton.isEnabled = available
             }
 
-            viewModel.$canResume.sink { [unowned self] canResume in
-                if #unavailable(iOS 26) {
-                    playButton.isEnabled = canResume
-                }
-            }
-
-            viewModel.$canPause.sink { [unowned self] canPause in
-                if #unavailable(iOS 26) {
-                    pauseButton.isEnabled = canPause
-                }
-            }
-
             Publishers.CombineLatest(viewModel.$canResume, viewModel.$canPause)
-                .debounce(for: .milliseconds(1), scheduler: UIScheduler.shared)
-                .sink { [unowned self] _, _ in
+                .removeDuplicates { $0.0 == $1.0 && $0.1 == $1.1 }
+                .sink { [unowned self] canResume, canPause in
+                    // Keep all three actions visible. Only the action appropriate to
+                    // the current state is emphasized; the opposite action is muted.
+                    playButton.isEnabled = canResume
+                    pauseButton.isEnabled = canPause
+                    playButton.tintColor = canResume ? .tintColor : .tertiaryLabel
+                    pauseButton.tintColor = canPause ? .tintColor : .tertiaryLabel
                     reloadToolbar()
                 }
+
+            rehashButton.tintColor = .tintColor
         }
 
         playButton.primaryAction = .init(title: %"details.start", image: .init(systemName: "play.fill"), handler: { [unowned self] _ in
@@ -162,29 +158,22 @@ private extension TorrentDetailsViewController {
 
     var fixedSpacing: UIBarButtonItem {
         let item = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        item.width = 44
+        item.width = 16
         return item
     }
 
     func reloadToolbar() {
-        if #available(iOS 26, visionOS 99999, *) {
-            toolbarItems = [
-                viewModel.canResume ? playButton : nil,
-                viewModel.canPause ? pauseButton : nil,
-                rehashButton,
-                .init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                deleteButton
-            ].compactMap { $0 }
-        } else {
-            toolbarItems = [
-                playButton,
-                fixedSpacing,
-                pauseButton,
-                fixedSpacing,
-                rehashButton,
-                .init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                deleteButton
-            ]
-        }
+        // Explicit fixed spacing avoids iOS 26 automatically compressing these
+        // actions into an overly tight cluster or hiding the inactive action.
+        toolbarItems = [
+            playButton,
+            fixedSpacing,
+            pauseButton,
+            fixedSpacing,
+            rehashButton,
+            .init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            deleteButton
+        ]
+        setToolbarItems(toolbarItems, animated: false)
     }
 }
