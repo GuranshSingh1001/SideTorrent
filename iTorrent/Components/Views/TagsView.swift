@@ -15,6 +15,7 @@ class TagsView: UIScrollView {
     private var topStackView: UIStackView!
     private var backgroundView: UIView!
     private var tagMaskView: UIView!
+    private var tintColorCancellable: AnyCancellable?
 
     var titles: [String] = [] {
         didSet { updateButtons(for: titles) }
@@ -95,6 +96,13 @@ class TagsView: UIScrollView {
         backgroundView.layer.cornerCurve = .continuous
 
         insertSubview(backgroundView, aboveSubview: bottomStackView)
+
+        // Keep the selected chip in sync when the user changes the app accent color.
+        tintColorCancellable = PreferencesStorage.shared.$tintColor
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] color in
+                self?.backgroundView.backgroundColor = color
+            }
     }
 
     private func setupTagMaskView() {
