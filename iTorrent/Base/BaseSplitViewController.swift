@@ -259,7 +259,8 @@ private extension BaseSplitViewController {
                 .padding(.vertical, 9)
                 .background(Capsule().fill(Color.secondary.opacity(0.10)))
         }
-    }}
+    }
+}
 
 #Preview(body: {
     BaseSplitViewController.EmptyView()
