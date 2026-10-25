@@ -203,25 +203,24 @@ private extension BaseSplitViewController {
 
     struct EmptyView: View {
         var body: some View {
-            VStack(spacing: 22) {
-                Image("DownloadArrowIcon")
-                    .renderingMode(.template)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 76, height: 76)
-                    .foregroundStyle(Color.accentColor)
-                    .frame(width: 144, height: 144)
-                    .background(
-                        RoundedRectangle(cornerRadius: 38, style: .continuous)
-                            .fill(Color.accentColor.opacity(0.12))
-                    )
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 38, style: .continuous)
-                            .strokeBorder(Color.accentColor.opacity(0.22), lineWidth: 1)
-                    }
+            VStack(alignment: .center, spacing: 22) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 38, style: .continuous)
+                        .fill(Color.accentColor.opacity(0.12))
+                    RoundedRectangle(cornerRadius: 38, style: .continuous)
+                        .strokeBorder(Color.accentColor.opacity(0.22), lineWidth: 1)
+
+                    Image("DownloadArrowIcon")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 76, height: 76)
+                        .foregroundStyle(Color.accentColor)
+                }
+                .frame(width: 144, height: 144)
 
                 VStack(spacing: 10) {
-                    Text("Your next download starts here")
+                    Text("Ready to start downloading?")
                         .font(.title2.weight(.bold))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.primary)
@@ -247,7 +246,7 @@ private extension BaseSplitViewController {
                     .padding(.top, 4)
             }
             .padding(32)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .background(Color(uiColor: .systemBackground))
         }
 
