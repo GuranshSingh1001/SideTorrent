@@ -82,6 +82,7 @@ struct AdaptiveArrangementViewHolder<Primary: View, Secondary: View>: View {
     }
 
     var body: some View {
+#if compiler(>=6.3)
         GeometryReader { proxy in
             let bounds = CGRect(origin: .zero, size: proxy.size)
             // This query returns only active division regions by default.
@@ -115,6 +116,12 @@ struct AdaptiveArrangementViewHolder<Primary: View, Secondary: View>: View {
             }
             .frame(width: bounds.width, height: bounds.height)
         }
+#else
+        ZStack {
+            secondary
+            primary
+        }
+#endif
     }
 
     private func placement(in bounds: CGRect, hinge: CGRect?) -> Placement {
