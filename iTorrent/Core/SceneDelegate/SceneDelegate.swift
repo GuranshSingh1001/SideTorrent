@@ -80,7 +80,6 @@ class SceneDelegate: MvvmSceneDelegate {
         router.register(RssListPreferencesViewController.self)
         router.register(RssSearchViewController.self)
 
-        router.register(VLCPlayerViewController.self)
     }
 
     override func resolveRootVC(with router: Router) -> UIViewController {
