@@ -66,6 +66,7 @@ jobs:
             -skipPackagePluginValidation \
             -skipMacroValidation \
             SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) UNSIGNED_IPA_BUILD' \
+            UNSIGNED_IPA_BUILD=1 \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_IDENTITY="" \
