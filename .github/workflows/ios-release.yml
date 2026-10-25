@@ -77,13 +77,13 @@ jobs:
           mkdir -p "$RUNNER_TEMP/ipa/Payload"
           ditto "$APP_PATH" "$RUNNER_TEMP/ipa/Payload/iTorrent.app"
           cd "$RUNNER_TEMP/ipa"
-          /usr/bin/zip -qry "$GITHUB_WORKSPACE/iTorrent-unsigned.ipa" Payload
-          test -s "$GITHUB_WORKSPACE/iTorrent-unsigned.ipa"
+          /usr/bin/zip -qry "$GITHUB_WORKSPACE/SideTorrent.ipa" Payload
+          test -s "$GITHUB_WORKSPACE/SideTorrent.ipa"
 
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: iTorrent-unsigned-ipa
-          path: iTorrent-unsigned.ipa
+          name: SideTorrent-ipa
+          path: SideTorrent.ipa
           if-no-files-found: error
           retention-days: 14
