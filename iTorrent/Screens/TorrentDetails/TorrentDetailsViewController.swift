@@ -48,7 +48,6 @@ class TorrentDetailsViewController<VM: TorrentDetailsViewModel>: BaseCollectionV
                     reloadToolbar()
                 }
 
-            rehashButton.tintColor = .tintColor
         }
 
         playButton.primaryAction = .init(title: %"details.start", image: .init(systemName: "play.fill"), handler: { [unowned self] _ in
