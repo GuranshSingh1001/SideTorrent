@@ -44,6 +44,7 @@ struct ReservedAreaContainerContent<Content: View>: View {
     }
 
     var body: some View {
+#if compiler(>=6.3)
         GeometryReader { geometry in
             let regions =
                 geometry.reservedRegions(kind: .occlusion)
@@ -60,6 +61,9 @@ struct ReservedAreaContainerContent<Content: View>: View {
             }
         }
         .ignoresSafeArea()
+#else
+        content.padding()
+#endif
     }
 }
 
