@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="130" viewBox="0 0 120 130">
-  <path d="M51 0
+  <path transform="translate(0 13)" d="M51 0
            Q48 0 48 3
            V60
            L34 46
