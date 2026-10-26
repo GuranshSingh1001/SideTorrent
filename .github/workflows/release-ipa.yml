@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   build-and-release:
-    name: Archive, export IPA, and publish release
+    name: Build unsigned IPA and publish release
     runs-on: macos-15
     timeout-minutes: 90
     steps:
@@ -149,7 +149,7 @@ jobs:
       - name: Upload IPA as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SideTorrent-${{ inputs.version }}-ipa
+          name: SideTorrent-${{ inputs.version }}-unsigned-ipa
           path: ${{ steps.ipa.outputs.path }}
           if-no-files-found: error
           retention-days: 30
@@ -165,7 +165,7 @@ jobs:
           TAG="v$VERSION"
           NOTES_FILE="$RUNNER_TEMP/release-notes.md"
           RELEASE_SHA="${{ steps.version_commit.outputs.sha }}"
-          printf '%s\n\nBuilt from commit %s using GitHub Actions.\n' "$RELEASE_NOTES" "$RELEASE_SHA" > "$NOTES_FILE"
+          printf '%s\n\n**This is an unsigned IPA.** It is not directly installable on a standard iPhone or iPad until it is signed and provisioned.\n\nBuilt from commit %s using GitHub Actions.\n' "$RELEASE_NOTES" "$RELEASE_SHA" > "$NOTES_FILE"
           gh release create "$TAG" "$IPA_PATH" \
             --repo "$GITHUB_REPOSITORY" \
             --target "$RELEASE_SHA" \
