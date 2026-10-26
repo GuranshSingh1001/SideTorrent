@@ -107,79 +107,48 @@ jobs:
           xcodebuild -list -project iTorrent.xcodeproj
           xcodebuild -resolvePackageDependencies -project iTorrent.xcodeproj -scheme iTorrent
 
-      - name: Configure App Store Connect API authentication
-        env:
-          ASC_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
-          ASC_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-          ASC_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+      - name: Archive iOS app without code signing
         run: |
           set -euo pipefail
-          if [[ -z "$ASC_KEY_ID" || -z "$ASC_ISSUER_ID" || -z "$ASC_PRIVATE_KEY" ]]; then
-            echo "Missing required secrets: APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_PRIVATE_KEY." >&2
-            exit 1
-          fi
-          mkdir -p "$RUNNER_TEMP/private_keys"
-          printf '%s' "$ASC_PRIVATE_KEY" > "$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8"
-          chmod 600 "$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8"
-          {
-            echo "ASC_KEY_PATH=$RUNNER_TEMP/private_keys/AuthKey_${ASC_KEY_ID}.p8"
-            echo "ASC_KEY_ID=$ASC_KEY_ID"
-            echo "ASC_ISSUER_ID=$ASC_ISSUER_ID"
-          } >> "$GITHUB_ENV"
-
-      - name: Archive iOS app
-        env:
-          TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
-        run: |
-          set -euo pipefail
-          if [[ -z "$TEAM_ID" ]]; then
-            echo "Set repository variable APPLE_TEAM_ID to the Apple Developer Team ID." >&2
-            exit 1
-          fi
           xcodebuild \
             -project iTorrent.xcodeproj \
             -scheme iTorrent \
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/SideTorrent.xcarchive" \
-            -authenticationKeyPath "$ASC_KEY_PATH" \
-            -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            -allowProvisioningUpdates \
-            CODE_SIGN_STYLE=Automatic \
-            DEVELOPMENT_TEAM="$TEAM_ID" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
             MARKETING_VERSION="${{ inputs.version }}" \
             CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
             archive
 
-      - name: Export IPA
-        env:
-          TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+      - name: Package unsigned IPA
+        id: ipa
         run: |
           set -euo pipefail
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>destination</key><string>export</string>
-            <key>method</key><string>app-store-connect</string>
-            <key>signingStyle</key><string>automatic</string>
-            <key>teamID</key><string>$TEAM_ID</string>
-            <key>manageAppVersionAndBuildNumber</key><false/>
-          </dict>
-          PLIST
-          xcodebuild -exportArchive \
-            -archivePath "$RUNNER_TEMP/SideTorrent.xcarchive" \
-            -exportPath "$RUNNER_TEMP/export" \
-            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-            -authenticationKeyPath "$ASC_KEY_PATH" \
-            -authenticationKeyID "$ASC_KEY_ID" \
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            -allowProvisioningUpdates
-
+          APP_PATH="$RUNNER_TEMP/SideTorrent.xcarchive/Products/Applications/iTorrent.app"
+          if [[ ! -d "$APP_PATH" ]]; then
+            echo "Expected app not found in archive: $APP_PATH" >&2
+            find "$RUNNER_TEMP/SideTorrent.xcarchive/Products/Applications" -maxdepth 3 -print || true
+            exit 1
+          fi
+          # An unsigned IPA is a ZIP container with Payload/<AppName>.app inside.
+          # It is not installable on a device until it is signed and provisioned.
+          PACKAGE_DIR="$RUNNER_TEMP/unsigned-ipa"
+          mkdir -p "$PACKAGE_DIR/Payload" dist
+          cp -R "$APP_PATH" "$PACKAGE_DIR/Payload/"
+          rm -rf "$PACKAGE_DIR/Payload/iTorrent.app/_CodeSignature"
+          find "$PACKAGE_DIR/Payload" -name '_CodeSignature' -type d -prune -exec rm -rf {} +
+          find "$PACKAGE_DIR/Payload" -name 'embedded.mobileprovision' -type f -delete
+          VERSION="${{ inputs.version }}"
+          (cd "$PACKAGE_DIR" && /usr/bin/zip -qry "$GITHUB_WORKSPACE/dist/SideTorrent-${VERSION}-unsigned.ipa" Payload)
+          test -s "dist/SideTorrent-${VERSION}-unsigned.ipa"
+          unzip -l "dist/SideTorrent-${VERSION}-unsigned.ipa" | grep -q 'Payload/iTorrent.app/'
+          echo "path=dist/SideTorrent-${VERSION}-unsigned.ipa" >> "$GITHUB_OUTPUT"
       - name: Locate IPA (including zipped build outputs)
-        id: ipa
+        id: ipa_legacy
+        if: false
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/ipa-unpacked"
