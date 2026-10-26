@@ -81,6 +81,25 @@ jobs:
           print(f"Set MARKETING_VERSION={version}; CURRENT_PROJECT_VERSION={build}")
           PY
 
+      - name: Commit version update
+        id: version_commit
+        env:
+          VERSION: ${{ inputs.version }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add iTorrent.xcodeproj/project.pbxproj README.md
+          if git diff --cached --quiet; then
+            echo "Version files already match the requested release version."
+          else
+            git commit -m "chore: prepare SideTorrent v${VERSION} (build ${BUILD_NUMBER})"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+          RELEASE_SHA="$(git rev-parse HEAD)"
+          echo "sha=${RELEASE_SHA}" >> "$GITHUB_OUTPUT"
+
       - name: Select Xcode and resolve scheme
         run: |
           set -euo pipefail
