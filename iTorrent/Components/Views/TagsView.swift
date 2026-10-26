@@ -102,7 +102,9 @@ class TagsView: UIScrollView {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] color in
                 self?.backgroundView.backgroundColor = color
+                self?.updateSelectedTextColor(for: color)
             }
+        updateSelectedTextColor(for: PreferencesStorage.shared.tintColor)
     }
 
     private func setupTagMaskView() {
@@ -127,7 +129,10 @@ class TagsView: UIScrollView {
             let bottomButton = button(with: title, foregroundColor: .label)
             bottomStackView.addArrangedSubview(bottomButton)
 
-            let topButton = button(with: title, foregroundColor: .white)
+            let topButton = button(
+                with: title,
+                foregroundColor: contrastingTextColor(for: PreferencesStorage.shared.tintColor)
+            )
             topStackView.addArrangedSubview(topButton)
         }
 
@@ -135,6 +140,39 @@ class TagsView: UIScrollView {
         layoutIfNeeded()
 
         updateSelection(for: selectedTagIndex, animated: false)
+    }
+
+    private func updateSelectedTextColor(for backgroundColor: UIColor) {
+        let foregroundColor = contrastingTextColor(for: backgroundColor)
+        topStackView?.arrangedSubviews
+            .compactMap { $0 as? UIButton }
+            .forEach { button in
+                button.configuration?.baseForegroundColor = foregroundColor
+            }
+    }
+
+    /// Selects black or white based on WCAG relative luminance.
+    private func contrastingTextColor(for color: UIColor) -> UIColor {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        guard color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
+            return .white
+        }
+
+        func linearize(_ component: CGFloat) -> CGFloat {
+            component <= 0.04045
+                ? component / 12.92
+                : pow((component + 0.055) / 1.055, 2.4)
+        }
+
+        let luminance = 0.2126 * linearize(red)
+            + 0.7152 * linearize(green)
+            + 0.0722 * linearize(blue)
+
+        return luminance > 0.179 ? .black : .white
     }
 
     private func button(with title: String, foregroundColor: UIColor) -> UIButton {
