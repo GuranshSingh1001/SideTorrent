@@ -7,6 +7,3 @@
 [submodule "Submodules/GCDWebServer"]
 	path = Submodules/GCDWebServer
 	url = https://github.com/XITRIX/GCDWebServer.git
-[submodule "Submodules/SwiftVLC"]
-	path = Submodules/SwiftVLC
-	url = https://github.com/XITRIX/SwiftVLC.git

@@ -23,7 +23,7 @@ concurrency:
 jobs:
   build-and-release:
     name: Build unsigned IPA and publish release
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 90
     steps:
       - name: Check out source
@@ -31,6 +31,11 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 26.6
 
       - name: Validate version and release tag
         env:
@@ -105,18 +110,42 @@ jobs:
         run: |
           set -euo pipefail
           xcode-select -p
-          xcodebuild -list -project iTorrent.xcodeproj
-          xcodebuild -resolvePackageDependencies -project iTorrent.xcodeproj -scheme iTorrent
+          xcodebuild -list -workspace iTorrent.xcworkspace
+          xcodebuild -resolvePackageDependencies -workspace iTorrent.xcworkspace -scheme iTorrent -skipPackagePluginValidation -skipMacroValidation
+
+      - name: Prepare build dependencies
+        run: |
+          set -euo pipefail
+          if ! brew list --versions boost >/dev/null 2>&1; then
+            brew install boost
+          fi
+
+      - name: Build LibTorrent
+        run: ./Submodules/LibTorrent-Swift/make.sh
+
+      - name: Provide optional Firebase resource for unsigned build
+        run: |
+          mkdir -p iTorrent/Core/Assets
+          if [[ ! -f iTorrent/Core/Assets/GoogleService-Info.plist ]]; then
+            cat > iTorrent/Core/Assets/GoogleService-Info.plist <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict/></plist>
+          PLIST
+          fi
 
       - name: Archive iOS app without code signing
         run: |
           set -euo pipefail
           xcodebuild \
-            -project iTorrent.xcodeproj \
+            -workspace iTorrent.xcworkspace \
             -scheme iTorrent \
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$RUNNER_TEMP/SideTorrent.xcarchive" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            -skipPackagePluginValidation \
+            -skipMacroValidation \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
