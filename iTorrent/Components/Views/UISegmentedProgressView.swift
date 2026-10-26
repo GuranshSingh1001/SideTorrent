@@ -39,31 +39,41 @@ public class UISegmentedProgressView: UIView {
     override public func draw(_ rect: CGRect) {
         super.draw(rect)
 
-        let context = UIGraphicsGetCurrentContext()
-        context?.setLineWidth(bounds.size.height)
-        context?.setStrokeColor(tintColor.cgColor)
-        let pieceLength = bounds.width / Double(progress.count)
+        guard !progress.isEmpty, bounds.width > 0, bounds.height > 0,
+              let context = UIGraphicsGetCurrentContext() else { return }
 
-        var start: Double = 0
-        var end: Double = 0
-        var merged = false
+        // A screen cannot display more independent horizontal details than it has
+        // physical pixels. Keep the full per-piece model, but rasterize it at the
+        // view's pixel resolution instead of issuing a Core Graphics stroke for
+        // every piece (large torrents can contain millions of pieces).
+        let scale = window?.screen.scale ?? UIScreen.main.scale
+        let columnCount = min(progress.count, max(1, Int(ceil(bounds.width * scale))))
+        let pieceCount = progress.count
+        let columnWidth = bounds.width / CGFloat(columnCount)
+        context.setFillColor(tintColor.cgColor)
 
-        for iter in 0 ..< progress.count {
-            start = Double(iter) * bounds.width / Double(progress.count)
+        for column in 0 ..< columnCount {
+            let startIndex = column * pieceCount / columnCount
+            let endIndex = max(startIndex + 1, (column + 1) * pieceCount / columnCount)
+            var completed: Double = 0
 
-            if !merged {
-                context?.move(to: CGPoint(x: start, y: bounds.midY))
+            for pieceIndex in startIndex ..< min(endIndex, pieceCount) {
+                completed += min(1, max(0, progress[pieceIndex]))
             }
-            if progress[iter] == 1, iter != progress.count - 1 {
-                merged = true
-                continue
-            }
-            merged = false
 
-            end = start + progress[iter] * pieceLength
-            context?.addLine(to: CGPoint(x: end, y: bounds.midY))
+            let averageProgress = completed / Double(min(endIndex, pieceCount) - startIndex)
+            guard averageProgress > 0 else { continue }
 
-            context?.strokePath()
+            // Encode sub-pixel completion as vertical coverage within each pixel
+            // column, so sparse and partially complete regions remain visible.
+            let barHeight = bounds.height * averageProgress
+            let barRect = CGRect(
+                x: CGFloat(column) * columnWidth,
+                y: bounds.midY - barHeight / 2,
+                width: columnWidth + 0.5 / scale,
+                height: barHeight
+            )
+            context.fill(barRect)
         }
     }
 
