@@ -29,7 +29,7 @@ Download, manage, and organize torrents with control over the files you keep.
 
 ## Version
 
-**SideTorrent 1.0.0**
+**SideTorrent 1.0.1**
 
 ## Credits
 
