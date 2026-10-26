@@ -146,35 +146,6 @@ jobs:
           test -s "dist/SideTorrent-${VERSION}-unsigned.ipa"
           unzip -l "dist/SideTorrent-${VERSION}-unsigned.ipa" | grep -q 'Payload/iTorrent.app/'
           echo "path=dist/SideTorrent-${VERSION}-unsigned.ipa" >> "$GITHUB_OUTPUT"
-      - name: Locate IPA (including zipped build outputs)
-        id: ipa_legacy
-        if: false
-        run: |
-          set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/ipa-unpacked"
-          IPA_PATH="$(find "$RUNNER_TEMP/export" -type f -name '*.ipa' -print -quit || true)"
-          if [[ -z "$IPA_PATH" ]]; then
-            ZIP_PATH="$(find "$RUNNER_TEMP/export" -type f -name '*.zip' -print -quit || true)"
-            if [[ -n "$ZIP_PATH" ]]; then
-              unzip -q "$ZIP_PATH" -d "$RUNNER_TEMP/ipa-unpacked"
-              IPA_PATH="$(find "$RUNNER_TEMP/ipa-unpacked" -type f -name '*.ipa' -print -quit || true)"
-            fi
-          fi
-          if [[ -z "$IPA_PATH" || ! -f "$IPA_PATH" ]]; then
-            echo "No .ipa was produced by the export step." >&2
-            find "$RUNNER_TEMP/export" -maxdepth 4 -type f -print || true
-            exit 1
-          fi
-          mkdir -p dist
-          VERSION="${{ inputs.version }}"
-          cp "$IPA_PATH" "dist/SideTorrent-${VERSION}.ipa"
-          echo "path=dist/SideTorrent-${VERSION}.ipa" >> "$GITHUB_OUTPUT"
-          test -s "dist/SideTorrent-${VERSION}.ipa"
-          unzip -l "dist/SideTorrent-${VERSION}.ipa" | grep -q 'Payload/.*\.app/' || {
-            echo "The exported IPA does not contain an app Payload." >&2
-            exit 1
-          }
-
       - name: Upload IPA as workflow artifact
         uses: actions/upload-artifact@v4
         with:
