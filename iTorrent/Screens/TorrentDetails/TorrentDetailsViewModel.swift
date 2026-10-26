@@ -271,7 +271,10 @@ private extension TorrentDetailsViewModel {
         sequentialModel.isOn = snapshot.isSequential
         firstAndLastModel.isOn = snapshot.isFirstLastPiecePriority
         progressModel.progress = snapshot.progress
-        progressModel.segmentedProgress = snapshot.segmentedProgress
+        let segmentedProgress = snapshot.segmentedProgress
+        if progressModel.segmentedProgress != segmentedProgress {
+            progressModel.segmentedProgress = segmentedProgress
+        }
 
         if snapshot.infoHashes.hasV1 {
             hashModel.detail = snapshot.infoHashes.v1.hex
@@ -471,7 +474,17 @@ private extension TorrentHandle.ObservedSnapshot {
         return ((totalWanted - totalWantedDone) / downloadRate).timeString
     }
 
+    // The segmented bar is only a tiny visual summary. Drawing one segment per
+    // torrent piece scales poorly for very large torrents (and can make scrolling
+    // janky), so sample a bounded number of pieces instead of materializing all of
+    // them on every snapshot update.
     var segmentedProgress: [Double] {
-        pieces?.map { $0.doubleValue } ?? [0]
+        guard let pieces, !pieces.isEmpty else { return [0] }
+
+        let sampleCount = min(pieces.count, 256)
+        let step = Double(pieces.count) / Double(sampleCount)
+        return (0..<sampleCount).map { index in
+            pieces[Int(Double(index) * step)].doubleValue
+        }
     }
 }
