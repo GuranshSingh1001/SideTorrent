@@ -21,6 +21,24 @@ class TorrentDetailsViewModel: BaseCollectionViewModelWith<TorrentHandle>, @unch
 
     @Published private var storageError: Bool = false
 
+    // Torrent telemetry changes frequently, but only a small subset of values
+    // changes the detail collection's structure. Cache those inputs to avoid
+    // rebuilding and diffing every section for each speed/progress update.
+    private struct SectionSignature: Equatable {
+        let isPaused: Bool
+        let state: TorrentHandle.State
+        let hasV1: Bool
+        let hasV2: Bool
+        let isPrivate: Bool
+        let hasCreator: Bool
+        let hasComment: Bool
+        let showsPath: Bool
+        let hasMetadata: Bool
+        let showsSpeed: Bool
+    }
+
+    private var lastSectionSignature: SectionSignature?
+
     let dismissSignal = PassthroughSubject<Void, Never>()
 
     override func prepare(with model: TorrentHandle) {
@@ -297,6 +315,22 @@ private extension TorrentDetailsViewModel {
         let isSeeding = friendlyState == .seeding
         let hasV1 = snapshot.infoHashes.hasV1
         let hasV2 = snapshot.infoHashes.hasV2
+
+        let signature = SectionSignature(
+            isPaused: snapshot.isPaused,
+            state: friendlyState,
+            hasV1: hasV1,
+            hasV2: hasV2,
+            isPrivate: snapshot.isPrivate,
+            hasCreator: !(snapshot.creator ?? "").isEmpty,
+            hasComment: !(snapshot.comment ?? "").isEmpty,
+            showsPath: !preferences.storageScopes.isEmpty,
+            hasMetadata: snapshot.hasMetadata,
+            showsSpeed: showsSpeed
+        )
+
+        guard signature != lastSectionSignature else { return }
+        lastSectionSignature = signature
 
         var sections: [MvvmCollectionSectionModel] = []
         defer { self.sections = sections }
