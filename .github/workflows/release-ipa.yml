@@ -227,6 +227,6 @@ jobs:
           printf '%s\n\nBuilt from commit %s using GitHub Actions.\n' "$RELEASE_NOTES" "$GITHUB_SHA" > "$NOTES_FILE"
           gh release create "$TAG" "$IPA_PATH" \
             --repo "$GITHUB_REPOSITORY" \
-            --target "$GITHUB_SHA" \
+            --target "$RELEASE_SHA" \
             --title "SideTorrent $VERSION" \
             --notes-file "$NOTES_FILE"
