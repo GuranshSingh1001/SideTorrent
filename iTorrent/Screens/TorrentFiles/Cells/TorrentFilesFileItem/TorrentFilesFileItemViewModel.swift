@@ -66,11 +66,38 @@ class TorrentFilesFileItemViewModel: BaseViewModelWith<(TorrentHandle, Int)>, Mv
 
     func setPriority(_ priority: FileEntry.Priority) {
         torrentHandle.setFilePriority(priority, at: index)
+        if priority == .dontDownload {
+            removeTorrentFileFromDiskIfEnabled(torrentHandle: torrentHandle, index: index)
+        }
     }
 }
 
 extension FileEntry {
     var progress: Double {
         Double(downloaded) / Double(size)
+    }
+}
+
+
+/// Deletes a selected torrent file only when the opt-in preference is enabled.
+/// The path check prevents malformed torrent paths from escaping the download root.
+func removeTorrentFileFromDiskIfEnabled(torrentHandle: TorrentHandle, index: Int) {
+    guard PreferencesStorage.shared.deleteFileWhenDisabled else { return }
+
+    let snapshot = torrentHandle.snapshot
+    guard snapshot.files.indices.contains(index),
+          let downloadPath = snapshot.downloadPath
+    else { return }
+
+    let rootPath = downloadPath.standardizedFileURL.path
+    let fileURL = downloadPath.appending(path: snapshot.files[index].path).standardizedFileURL
+    guard fileURL.path.hasPrefix(rootPath + "/"),
+          FileManager.default.fileExists(atPath: fileURL.path)
+    else { return }
+
+    do {
+        try FileManager.default.removeItem(at: fileURL)
+    } catch {
+        print("SideTorrent: failed to delete disabled file \\(snapshot.files[index].path): \\(error)")
     }
 }
