@@ -233,7 +233,8 @@ private extension TorrentService {
 private extension TorrentHandle {
     func cleanupPartialUnselectedFiles() {
         let currentSnapshot = snapshot
-        guard currentSnapshot.isFinished,
+        let deleteWhenDisabled = PreferencesStorage.shared.deleteFileWhenDisabled
+        guard currentSnapshot.isFinished || deleteWhenDisabled,
               let downloadPath = currentSnapshot.downloadPath
         else { return }
 
@@ -242,7 +243,7 @@ private extension TorrentHandle {
             guard file.priority == .dontDownload,
                   file.size > 0,
                   file.downloaded > 0,
-                  file.downloaded < file.size
+                  (deleteWhenDisabled || file.downloaded < file.size)
             else { continue }
 
             let fileURL = downloadPath.appending(path: file.path).standardizedFileURL
