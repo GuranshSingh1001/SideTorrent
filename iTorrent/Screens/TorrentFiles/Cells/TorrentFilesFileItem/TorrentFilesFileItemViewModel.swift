@@ -98,6 +98,6 @@ func removeTorrentFileFromDiskIfEnabled(torrentHandle: TorrentHandle, index: Int
     do {
         try FileManager.default.removeItem(at: fileURL)
     } catch {
-        print("SideTorrent: failed to delete disabled file \\(snapshot.files[index].path): \\(error)")
+        print("SideTorrent: failed to delete disabled file \(snapshot.files[index].path): \(error)")
     }
 }
