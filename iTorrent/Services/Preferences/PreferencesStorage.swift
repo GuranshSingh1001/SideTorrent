@@ -64,6 +64,10 @@ class PreferencesStorage: Resolvable {
 
     @UserDefaultItem("preferencesStopSeedingOnFinish", false) var stopSeedingOnFinish: Bool
 
+    /// Delete a file from disk when its priority is changed to dontDownload.
+    /// Disabled by default to preserve existing user data.
+    @UserDefaultItem("preferencesDeleteFileWhenDisabled", false) var deleteFileWhenDisabled: Bool
+
     @UserDefaultItem("preferencesMaxActiveTorrents", 4) var maxActiveTorrents: Int
     @UserDefaultItem("preferencesMaxDownloadingTorrents", 3) var maxDownloadingTorrents: Int
     @UserDefaultItem("preferencesMaxUploadingTorrents", 3) var maxUploadingTorrents: Int
