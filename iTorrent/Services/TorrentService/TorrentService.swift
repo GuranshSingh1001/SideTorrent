@@ -199,6 +199,13 @@ private extension TorrentHandle {
                     let oldSnapshot = snapshot
                     updateSnapshot()
                     observableSnapshot.update()
+
+                    // Libtorrent may write the bytes of a shared piece into an
+                    // excluded file even though that file's priority is dontDownload.
+                    // Once all wanted data is complete, remove only those incomplete,
+                    // excluded files so they do not remain in the user's download folder.
+                    cleanupPartialUnselectedFiles()
+
                     let updateModel = TorrentService.TorrentUpdateModel(oldSnapshot: oldSnapshot, handle: self)
 
                     Task { @MainActor in
@@ -219,5 +226,35 @@ private extension TorrentService {
 
         // This is the important line:
         setenv("SSL_CERT_FILE", caPath, 1)
+    }
+}
+
+
+private extension TorrentHandle {
+    func cleanupPartialUnselectedFiles() {
+        let currentSnapshot = snapshot
+        guard currentSnapshot.isFinished,
+              let downloadPath = currentSnapshot.downloadPath
+        else { return }
+
+        let rootPath = downloadPath.standardizedFileURL.path
+        for file in currentSnapshot.files {
+            guard file.priority == .dontDownload,
+                  file.size > 0,
+                  file.downloaded > 0,
+                  file.downloaded < file.size
+            else { continue }
+
+            let fileURL = downloadPath.appending(path: file.path).standardizedFileURL
+            // Never allow torrent metadata to make cleanup escape the download root.
+            guard fileURL.path.hasPrefix(rootPath + "/") else { continue }
+            guard FileManager.default.fileExists(atPath: fileURL.path) else { continue }
+
+            do {
+                try FileManager.default.removeItem(at: fileURL)
+            } catch {
+                print("SideTorrent: failed to remove partial excluded file \(file.path): \(error)")
+            }
+        }
     }
 }
