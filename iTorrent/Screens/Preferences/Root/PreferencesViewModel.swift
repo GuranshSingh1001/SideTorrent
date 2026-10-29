@@ -91,6 +91,10 @@ private extension PreferencesViewModel {
             PRSwitchViewModel(with: .init(title: %"preferences.seeding.stopOnFinish", value: preferences.$stopSeedingOnFinish.binding, isDangerous: true))
         })
 
+        sections.append(.init(id: "fileSelection", header: %"preferences.files") {
+            PRSwitchViewModel(with: .init(title: %"preferences.files.deleteWhenDisabled", value: preferences.$deleteFileWhenDisabled.binding, isDangerous: true))
+        })
+
         sections.append(.init(id: "torrentQueueLimits", header: %"preferences.queueLimits") {
             PRButtonViewModel(with: .init(title: %"preferences.queueLimits.active", value: preferences.$maxActiveTorrents.map { $0 == 0 ? %"preferences.speedLimits.unlimited" : "\($0)" }.eraseToAnyPublisher()) { [unowned self] in
                 textInput(title: %"preferences.queueLimits.active", placeholder: %"preferences.speedLimits.unlimited", defaultValue: "\(preferences.maxActiveTorrents)", type: .numberPad) { [unowned self] res in
