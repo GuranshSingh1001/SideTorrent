@@ -145,6 +145,10 @@ extension TorrentFilesViewModel {
         }
 
         torrentHandle.setFilesPriority(priority, at: files.map { NSNumber(integerLiteral: $0) })
+
+        if priority == .dontDownload, PreferencesStorage.shared.deleteFileWhenDisabled {
+            files.forEach { removeTorrentFileFromDiskIfEnabled(torrentHandle: torrentHandle, index: $0) }
+        }
     }
 }
 
