@@ -15808,6 +15808,26 @@
           }
         }
       }
+    },
+    "preferences.files": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File selection"
+          }
+        }
+      }
+    },
+    "preferences.files.deleteWhenDisabled": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete files when download is disabled"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
